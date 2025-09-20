@@ -1,6 +1,10 @@
 from uuid import UUID
 
-from common.application.exceptions import ApplicationError
+from common.application.exceptions import ApplicationError, NotFoundError
+
+
+class IdentityNotFoundError(NotFoundError):
+    pass
 
 
 class InvalidPasswordError(ApplicationError):

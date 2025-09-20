@@ -41,6 +41,13 @@ class DateTime:
             return self.value == other
         return NotImplemented
 
+    def __ne__(self, other: Any) -> bool:
+        if isinstance(other, DateTime):
+            return self.value != other.value
+        if isinstance(other, datetime):
+            return self.value != other
+        return NotImplemented
+
     def __lt__(self, other: Any) -> bool:
         if isinstance(other, DateTime):
             return self.value < other.value
