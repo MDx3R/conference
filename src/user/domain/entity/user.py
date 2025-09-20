@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Self
 from uuid import UUID
 
-from sso.domain.value_objects.username import Username
+from identity.domain.value_objects.username import Username
 
 
 @dataclass

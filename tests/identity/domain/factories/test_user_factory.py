@@ -4,7 +4,7 @@ from uuid import uuid4
 import pytest
 from common.domain.exceptions import InvariantViolationError
 from common.domain.interfaces.uuid_generator import IUUIDGenerator
-from sso.domain.value_objects.username import Username
+from identity.domain.value_objects.username import Username
 from user.domain.entity.user import User
 from user.domain.factories.user_factory import UserFactory
 
