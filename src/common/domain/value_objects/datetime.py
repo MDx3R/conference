@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta, timezone
+from datetime import UTC, date, datetime, time, timedelta, timezone
 from typing import Any
 
 from common.domain.exceptions import InvariantViolationError
@@ -8,10 +8,10 @@ from common.domain.exceptions import InvariantViolationError
 @dataclass(frozen=True)
 class DateTime:
     """A value object representing a timezone-aware datetime."""
-    
+
     value: datetime
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         tzinfo = self.value.tzinfo
         if tzinfo is None or tzinfo.utcoffset(self.value) is None:
             raise InvariantViolationError("DateTime must be timezone-aware")
@@ -22,10 +22,10 @@ class DateTime:
     def astimezone(self, tz: timezone | None = None) -> "DateTime":
         return DateTime(self.value.astimezone(tz))
 
-    def date(self):
+    def date(self) -> date:
         return self.value.date()
 
-    def time(self):
+    def time(self) -> time:
         return self.value.time()
 
     def timestamp(self) -> float:
