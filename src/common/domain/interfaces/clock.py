@@ -6,7 +6,7 @@ from common.domain.value_objects.datetime import DateTime  # timezone aware
 
 class IClock(ABC):
     """Abstract base class for clock implementations.
-    
+
     This class defines the interface for clock objects that provide timezone-aware
     date and time operations. Subclasses must implement the `now` method to return
     the current date and time as a `DateTime` object. The class also provides
