@@ -80,3 +80,7 @@ warn_return_any = true
 warn_unused_ignores = true
 show_error_codes = true
 explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disable_error_code = ["no-untyped-def", "misc"]
