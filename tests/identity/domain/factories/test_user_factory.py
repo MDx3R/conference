@@ -4,10 +4,9 @@ from uuid import uuid4
 import pytest
 from common.domain.exceptions import InvariantViolationError
 from common.domain.interfaces.uuid_generator import IUUIDGenerator
+from sso.domain.value_objects.username import Username
 from user.domain.entity.user import User
 from user.domain.factories.user_factory import UserFactory
-from user.domain.value_objects.password import Password
-from user.domain.value_objects.username import Username
 
 
 class TestUserFactory:
@@ -23,18 +22,13 @@ class TestUserFactory:
     def test_create_success(self) -> None:
         # Arrange
         username = "testuser"
-        password_hash = "hash"
 
         # Act
-        result = self.factory.create(username, password_hash)
+        result = self.factory.create(username)
 
         # Assert
-        assert result == User(self.user_id, Username(username), Password(password_hash))
+        assert result == User(self.user_id, Username(username))
 
-    def test_create_no_name_no_pass_fails(self) -> None:
+    def test_create_no_name_fails(self) -> None:
         with pytest.raises(InvariantViolationError):
-            self.factory.create("", "hash")
-        with pytest.raises(InvariantViolationError):
-            self.factory.create("testuser", "")
-        with pytest.raises(InvariantViolationError):
-            self.factory.create("", "")
+            self.factory.create("")
