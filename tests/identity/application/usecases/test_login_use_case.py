@@ -5,9 +5,7 @@ import pytest
 from identity.application.dtos.commands.login_command import LoginCommand
 from identity.application.dtos.models.auth_tokens import AuthTokens
 from identity.application.exceptions import InvalidPasswordError, InvalidUsernameError
-from identity.application.interfaces.repositories.identity_repository import (
-    IIdentityRepository,
-)
+from identity.application.interfaces.services.identity_service import IIdentityService
 from identity.application.interfaces.services.password_hash_service import (
     IPasswordHasher,
 )
@@ -27,9 +25,9 @@ class TestLoginUseCase:
             self.user_id, Username("test identity"), Password("hash")
         )
 
-        self.identity_repository = Mock(spec=IIdentityRepository)
-        self.identity_repository.get_by_username.return_value = self.identity
-        self.identity_repository.exists_by_username.return_value = True
+        self.identity_service = Mock(spec=IIdentityService)
+        self.identity_service.get_by_username.return_value = self.identity
+        self.identity_service.exists_by_username.return_value = True
 
         self.password_hasher = Mock(spec=IPasswordHasher)
         self.password_hasher.verify = Mock(return_value=True)
@@ -43,20 +41,21 @@ class TestLoginUseCase:
             username=self.identity.username.value, password="correct_password"
         )
         self.use_case = LoginUseCase(
-            self.identity_repository, self.password_hasher, self.token_issuer
+            self.identity_service, self.password_hasher, self.token_issuer
         )
 
     async def test_login_success(self):
         result = await self.use_case.execute(self.command)
 
         assert isinstance(result, AuthTokens)
+        assert result.user_id == self.user_id
         assert result.access_token == "access_token"
         assert result.refresh_token == "refresh_token"
 
-        self.identity_repository.exists_by_username.assert_awaited_once_with(
+        self.identity_service.exists_by_username.assert_awaited_once_with(
             self.identity.username.value
         )
-        self.identity_repository.get_by_username.assert_awaited_once_with(
+        self.identity_service.get_by_username.assert_awaited_once_with(
             self.identity.username.value
         )
         self.password_hasher.verify.assert_called_once_with(
@@ -65,7 +64,7 @@ class TestLoginUseCase:
         self.token_issuer.issue_tokens.assert_awaited_once_with(self.user_id)
 
     async def test_login_invalid_username(self):
-        self.identity_repository.exists_by_username.return_value = False
+        self.identity_service.exists_by_username.return_value = False
         with pytest.raises(InvalidUsernameError):
             await self.use_case.execute(self.command)
 

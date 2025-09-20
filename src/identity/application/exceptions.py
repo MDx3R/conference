@@ -15,6 +15,12 @@ class InvalidUsernameError(ApplicationError):
         self.username = username
 
 
+class UsernameAlreadyTakenError(ApplicationError):
+    def __init__(self, username: str):
+        super().__init__(f"Username '{username}' is already taken by another user.")
+        self.username = username
+
+
 class TokenExpiredError(ApplicationError):
     def __init__(self) -> None:
         super().__init__("Token expired")
