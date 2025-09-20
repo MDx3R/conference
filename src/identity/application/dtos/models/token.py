@@ -13,7 +13,7 @@ class TokenTypeEnum(str, Enum):
 @dataclass(frozen=True)
 class Token:
     token_id: UUID
-    user_id: UUID
+    identity_id: UUID
     value: str
     token_type: TokenTypeEnum
     issued_at: datetime
@@ -37,7 +37,7 @@ class Token:
     def create(
         cls,
         token_id: UUID,
-        user_id: UUID,
+        identity_id: UUID,
         value: str,
         token_type: TokenTypeEnum,
         issued_at: datetime,
@@ -45,7 +45,7 @@ class Token:
     ) -> Self:
         return cls(
             token_id=token_id,
-            user_id=user_id,
+            identity_id=identity_id,
             value=value,
             token_type=token_type,
             issued_at=issued_at,
