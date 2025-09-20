@@ -1,11 +1,9 @@
-from common.domain.interfaces.uuid_generator import IUUIDGenerator
+from uuid import UUID
+
 from user.domain.entity.user import User
 from user.domain.interfaces.user_factory import IUserFactory
 
 
 class UserFactory(IUserFactory):
-    def __init__(self, uuid_generator: IUUIDGenerator) -> None:
-        self.uuid_generator = uuid_generator
-
-    def create(self, username: str) -> User:
-        return User.create(self.uuid_generator.create(), username)
+    def create(self, user_id: UUID, username: str) -> User:
+        return User.create(user_id, username)

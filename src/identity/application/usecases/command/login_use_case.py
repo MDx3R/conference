@@ -4,9 +4,7 @@ from identity.application.exceptions import (
     InvalidPasswordError,
     InvalidUsernameError,
 )
-from identity.application.interfaces.repositories.identity_repository import (
-    IIdentityRepository,
-)
+from identity.application.interfaces.services.identity_service import IIdentityService
 from identity.application.interfaces.services.password_hash_service import (
     IPasswordHasher,
 )
@@ -19,19 +17,19 @@ from identity.application.interfaces.usecases.command.login_use_case import (
 class LoginUseCase(ILoginUseCase):
     def __init__(
         self,
-        user_repository: IIdentityRepository,
+        identity_service: IIdentityService,
         password_hasher: IPasswordHasher,
         token_issuer: ITokenIssuer,
     ) -> None:
-        self.user_repository = user_repository
+        self.identity_service = identity_service
         self.password_hasher = password_hasher
         self.token_issuer = token_issuer
 
     async def execute(self, command: LoginCommand) -> AuthTokens:
-        if not await self.user_repository.exists_by_username(command.username):
+        if not await self.identity_service.exists_by_username(command.username):
             raise InvalidUsernameError(command.username)
 
-        identity = await self.user_repository.get_by_username(command.username)
+        identity = await self.identity_service.get_by_username(command.username)
         if not self.password_hasher.verify(command.password, identity.password.value):
             raise InvalidPasswordError(identity.identity_id)
 
