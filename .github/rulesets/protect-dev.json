@@ -1,4 +1,5 @@
 {
+  "id": 8269240,
   "name": "protect-dev",
   "target": "branch",
   "source_type": "Repository",
@@ -13,8 +14,12 @@
     }
   },
   "rules": [
-    { "type": "non_fast_forward" },
-    { "type": "required_linear_history" },
+    {
+      "type": "non_fast_forward"
+    },
+    {
+      "type": "required_linear_history"
+    },
     {
       "type": "pull_request",
       "parameters": {
@@ -24,9 +29,18 @@
         "require_last_push_approval": false,
         "required_review_thread_resolution": true,
         "automatic_copilot_code_review_enabled": false,
-        "allowed_merge_methods": ["squash", "rebase"]
+        "allowed_merge_methods": [
+          "squash",
+          "rebase"
+        ]
       }
     }
   ],
-  "bypass_actors": []
+  "bypass_actors": [
+    {
+      "actor_id": 5,
+      "actor_type": "RepositoryRole",
+      "bypass_mode": "always"
+    }
+  ]
 }
