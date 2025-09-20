@@ -4,10 +4,10 @@ from uuid import uuid4
 import pytest
 from common.domain.exceptions import InvariantViolationError
 from common.domain.interfaces.uuid_generator import IUUIDGenerator
-from identity.domain.entity.user import User
-from identity.domain.factories.user_factory import UserFactory
-from identity.domain.value_objects.password import Password
-from identity.domain.value_objects.username import Username
+from user.domain.entity.user import User
+from user.domain.factories.user_factory import UserFactory
+from user.domain.value_objects.password import Password
+from user.domain.value_objects.username import Username
 
 
 class TestUserFactory:

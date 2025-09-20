@@ -2,15 +2,15 @@ from unittest.mock import Mock
 from uuid import uuid4
 
 import pytest
-from identity.application.dtos.queries.get_user_be_id_query import (
+from user.application.dtos.queries.get_user_be_id_query import (
     GetUserByIdQuery,
 )
-from identity.application.dtos.responses.user_dto import UserDTO
-from identity.application.interfaces.repositories.user_read_repository import (
+from user.application.dtos.responses.user_dto import UserDTO
+from user.application.interfaces.repositories.user_read_repository import (
     IUserReadRepository,
 )
-from identity.application.read_models.user_read_model import UserReadModel
-from identity.application.usecases.query.get_self_use_case import (
+from user.application.read_models.user_read_model import UserReadModel
+from user.application.usecases.query.get_self_use_case import (
     GetSelfUseCase,
 )
 
