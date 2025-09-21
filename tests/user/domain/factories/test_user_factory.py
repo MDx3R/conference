@@ -3,8 +3,9 @@ from uuid import uuid4
 import pytest
 from common.domain.exceptions import InvariantViolationError
 from idp.identity.domain.value_objects.username import Username
-from user.domain.entity.user import User
-from user.domain.factories.user_factory import UserFactory
+
+from conference.user.domain.entity.user import User
+from conference.user.domain.factories.user_factory import UserFactory
 
 
 class TestUserFactory:

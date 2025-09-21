@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Self
 from uuid import UUID
 
-from user.application.read_models.user_read_model import UserReadModel
+from conference.user.application.read_models.user_read_model import UserReadModel
 
 
 @dataclass(frozen=True)

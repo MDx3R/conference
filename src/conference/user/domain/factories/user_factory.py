@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from user.domain.entity.user import User
-from user.domain.interfaces.user_factory import IUserFactory
+from conference.user.domain.entity.user import User
+from conference.user.domain.interfaces.user_factory import IUserFactory
 
 
 class UserFactory(IUserFactory):

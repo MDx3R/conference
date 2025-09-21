@@ -2,7 +2,8 @@ from uuid import uuid4
 
 import pytest
 from common.domain.exceptions import InvariantViolationError
-from user.domain.entity.user import User
+
+from conference.user.domain.entity.user import User
 
 
 class TestUser:
