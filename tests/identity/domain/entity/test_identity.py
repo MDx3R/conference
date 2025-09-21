@@ -2,7 +2,7 @@ from uuid import uuid4
 
 import pytest
 from common.domain.exceptions import InvariantViolationError
-from identity.domain.entity.identity import Identity
+from idp.identity.domain.entity.identity import Identity
 
 
 class TestIdentity:
