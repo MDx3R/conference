@@ -21,3 +21,10 @@ class NotFoundError(ApplicationError):
 
 
 class RepositoryError(ApplicationError): ...
+
+
+class DuplicateEntryError(RepositoryError):
+    def __init__(self, field: str, value: str):
+        self.field = field
+        self.value = value
+        super().__init__(f"Duplicate entry for field '{field}': {value} already exists")
