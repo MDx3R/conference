@@ -3,8 +3,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from fastapi_utils.cbv import cbv
-from identity.domain.value_objects.descriptor import IdentityDescriptor
-from identity.presentation.http.fastapi.auth import (
+from idp.identity.domain.value_objects.descriptor import IdentityDescriptor
+from idp.identity.presentation.http.fastapi.auth import (
     get_descriptor,
     require_authenticated,
 )

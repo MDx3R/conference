@@ -1,9 +1,11 @@
 from uuid import UUID
 
-from identity.application.dtos.commands.create_identity_command import (
+from idp.identity.application.dtos.commands.create_identity_command import (
     CreateIdentityCommand,
 )
-from identity.application.interfaces.services.identity_service import IIdentityService
+from idp.identity.application.interfaces.services.identity_service import (
+    IIdentityService,
+)
 from user.application.dtos.commands.register_user_command import RegisterUserCommand
 from user.application.interfaces.repositories.user_repository import IUserRepository
 from user.application.interfaces.usecases.command.register_user_use_case import (
