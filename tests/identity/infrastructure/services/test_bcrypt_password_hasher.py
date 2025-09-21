@@ -1,5 +1,5 @@
 import pytest
-from identity.infrastructure.services.bcrypt.password_hasher import (
+from idp.identity.infrastructure.services.bcrypt.password_hasher import (
     BcryptPasswordHasher,
 )
 

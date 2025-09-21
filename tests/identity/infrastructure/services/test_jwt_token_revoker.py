@@ -6,11 +6,11 @@ import pytest
 from common.application.exceptions import NotFoundError
 from common.domain.interfaces.clock import IClock
 from common.domain.value_objects.datetime import DateTime
-from identity.application.exceptions import InvalidTokenError
-from identity.application.interfaces.repositories.token_repository import (
+from idp.identity.application.exceptions import InvalidTokenError
+from idp.identity.application.interfaces.repositories.token_repository import (
     IRefreshTokenRepository,
 )
-from identity.infrastructure.services.jwt.token_revoker import JWTTokenRevoker
+from idp.identity.infrastructure.services.jwt.token_revoker import JWTTokenRevoker
 
 
 @pytest.mark.asyncio

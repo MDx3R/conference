@@ -2,17 +2,17 @@ from unittest.mock import AsyncMock, Mock
 from uuid import uuid4
 
 import pytest
-from identity.application.dtos.commands.create_identity_command import (
+from idp.identity.application.dtos.commands.create_identity_command import (
     CreateIdentityCommand,
 )
-from identity.application.interfaces.repositories.identity_repository import (
+from idp.identity.application.interfaces.repositories.identity_repository import (
     IIdentityRepository,
 )
-from identity.application.services.identity_service import IdentityService
-from identity.domain.entity.identity import Identity
-from identity.domain.interfaces.identity_factory import IIdentityFactory
-from identity.domain.value_objects.password import Password
-from identity.domain.value_objects.username import Username
+from idp.identity.application.services.identity_service import IdentityService
+from idp.identity.domain.entity.identity import Identity
+from idp.identity.domain.interfaces.identity_factory import IIdentityFactory
+from idp.identity.domain.value_objects.password import Password
+from idp.identity.domain.value_objects.username import Username
 
 
 @pytest.mark.asyncio

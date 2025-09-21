@@ -2,12 +2,14 @@ from unittest.mock import Mock
 from uuid import uuid4
 
 import pytest
-from identity.application.dtos.commands.create_identity_command import (
+from idp.identity.application.dtos.commands.create_identity_command import (
     CreateIdentityCommand,
 )
-from identity.application.exceptions import UsernameAlreadyTakenError
-from identity.application.interfaces.services.identity_service import IIdentityService
-from identity.domain.value_objects.username import Username
+from idp.identity.application.exceptions import UsernameAlreadyTakenError
+from idp.identity.application.interfaces.services.identity_service import (
+    IIdentityService,
+)
+from idp.identity.domain.value_objects.username import Username
 from user.application.dtos.commands.register_user_command import RegisterUserCommand
 from user.application.interfaces.repositories.user_repository import IUserRepository
 from user.application.usecases.command.register_user_use_case import RegisterUserUseCase

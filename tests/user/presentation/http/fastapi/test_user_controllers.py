@@ -4,8 +4,10 @@ from uuid import uuid4
 import pytest
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
-from identity.application.interfaces.services.token_service import ITokenIntrospector
-from identity.domain.value_objects.descriptor import IdentityDescriptor
+from idp.identity.application.interfaces.services.token_service import (
+    ITokenIntrospector,
+)
+from idp.identity.domain.value_objects.descriptor import IdentityDescriptor
 from user.application.dtos.queries.get_user_be_id_query import GetUserByIdQuery
 from user.application.dtos.responses.user_dto import UserDTO
 from user.application.interfaces.usecases.query.get_self_use_case import IGetSelfUseCase
