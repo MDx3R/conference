@@ -5,14 +5,14 @@ from uuid import UUID
 from common.domain.interfaces.clock import IClock
 from common.domain.interfaces.token_generator import ITokenGenerator
 from common.domain.interfaces.uuid_generator import IUUIDGenerator
-from idp.identity.application.dtos.models.auth_tokens import AuthTokens
-from idp.identity.application.dtos.models.token import Token, TokenTypeEnum
-from idp.identity.application.interfaces.repositories.token_repository import (
+from idp.auth.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.dtos.models.token import Token, TokenTypeEnum
+from idp.auth.application.interfaces.repositories.token_repository import (
     IRefreshTokenRepository,
 )
-from idp.identity.application.interfaces.services.token_service import ITokenIssuer
-from idp.identity.infrastructure.config.auth_config import AuthConfig
-from idp.identity.infrastructure.services.jwt.claims import TokenClaims
+from idp.auth.application.interfaces.services.token_service import ITokenIssuer
+from idp.auth.infrastructure.config.auth_config import AuthConfig
+from idp.auth.infrastructure.services.jwt.claims import TokenClaims
 from jose import jwt
 
 

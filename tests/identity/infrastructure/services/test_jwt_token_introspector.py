@@ -6,14 +6,14 @@ import pytest
 from common.application.exceptions import NotFoundError, RepositoryError
 from common.domain.interfaces.clock import IClock
 from common.domain.value_objects.datetime import DateTime
-from idp.identity.application.exceptions import InvalidTokenError, TokenExpiredError
-from idp.identity.application.interfaces.repositories.descriptor_repository import (
+from idp.auth.application.interfaces.repositories.descriptor_repository import (
     IIdentityDescriptorRepository,
 )
-from idp.identity.infrastructure.config.auth_config import AuthConfig
-from idp.identity.infrastructure.services.jwt.token_introspector import (
+from idp.auth.infrastructure.config.auth_config import AuthConfig
+from idp.auth.infrastructure.services.jwt.token_introspector import (
     JWTTokenIntrospector,
 )
+from idp.identity.application.exceptions import InvalidTokenError, TokenExpiredError
 from jose import jwt
 
 

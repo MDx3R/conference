@@ -1,10 +1,10 @@
 from common.application.exceptions import NotFoundError
 from common.domain.interfaces.clock import IClock
-from idp.identity.application.exceptions import InvalidTokenError
-from idp.identity.application.interfaces.repositories.token_repository import (
+from idp.auth.application.interfaces.repositories.token_repository import (
     IRefreshTokenRepository,
 )
-from idp.identity.application.interfaces.services.token_service import ITokenRevoker
+from idp.auth.application.interfaces.services.token_service import ITokenRevoker
+from idp.identity.application.exceptions import InvalidTokenError
 
 
 class JWTTokenRevoker(ITokenRevoker):
