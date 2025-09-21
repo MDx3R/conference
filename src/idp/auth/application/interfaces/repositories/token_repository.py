@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from idp.auth.application.dtos.models.token import Token
+from idp.auth.domain.entity.token import Token
 
 
 class IRefreshTokenRepository(ABC):

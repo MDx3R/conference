@@ -10,7 +10,7 @@ class TokenTypeEnum(str, Enum):
     REFRESH = "refresh"
 
 
-@dataclass(frozen=True)
+@dataclass
 class Token:
     token_id: UUID
     identity_id: UUID
@@ -33,6 +33,9 @@ class Token:
     def is_revoked(self) -> bool:
         return self.revoked
 
+    def revoke(self) -> None:
+        self.revoked = True
+
     @classmethod
     def create(
         cls,
@@ -52,17 +55,3 @@ class Token:
             expires_at=expires_at,
             revoked=False,
         )
-
-
-@dataclass(frozen=True)
-class TokenPair:
-    access: Token
-    refresh: Token
-
-    def __post_init__(self) -> None:
-        assert self.access.is_access()
-        assert self.refresh.is_refresh()
-
-    @classmethod
-    def create(cls, access: Token, refresh: Token) -> Self:
-        return cls(access=access, refresh=refresh)
