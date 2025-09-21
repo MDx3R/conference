@@ -8,10 +8,15 @@ from idp.identity.application.interfaces.services.token_intospector import (
     ITokenIntrospector,
 )
 from idp.identity.domain.value_objects.descriptor import IdentityDescriptor
-from user.application.dtos.queries.get_user_be_id_query import GetUserByIdQuery
-from user.application.dtos.responses.user_dto import UserDTO
-from user.application.interfaces.usecases.query.get_self_use_case import IGetSelfUseCase
-from user.presentation.http.fastapi.controllers import query_router
+
+from conference.user.application.dtos.queries.get_user_be_id_query import (
+    GetUserByIdQuery,
+)
+from conference.user.application.dtos.responses.user_dto import UserDTO
+from conference.user.application.interfaces.usecases.query.get_self_use_case import (
+    IGetSelfUseCase,
+)
+from conference.user.presentation.http.fastapi.controllers import query_router
 
 
 @pytest.mark.asyncio

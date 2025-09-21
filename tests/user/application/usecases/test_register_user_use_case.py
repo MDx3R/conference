@@ -10,11 +10,18 @@ from idp.identity.application.interfaces.services.identity_service import (
     IIdentityService,
 )
 from idp.identity.domain.value_objects.username import Username
-from user.application.dtos.commands.register_user_command import RegisterUserCommand
-from user.application.interfaces.repositories.user_repository import IUserRepository
-from user.application.usecases.command.register_user_use_case import RegisterUserUseCase
-from user.domain.entity.user import User
-from user.domain.interfaces.user_factory import IUserFactory
+
+from conference.user.application.dtos.commands.register_user_command import (
+    RegisterUserCommand,
+)
+from conference.user.application.interfaces.repositories.user_repository import (
+    IUserRepository,
+)
+from conference.user.application.usecases.command.register_user_use_case import (
+    RegisterUserUseCase,
+)
+from conference.user.domain.entity.user import User
+from conference.user.domain.interfaces.user_factory import IUserFactory
 
 
 @pytest.mark.asyncio

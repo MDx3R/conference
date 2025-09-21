@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from user.domain.entity.user import User
+from conference.user.domain.entity.user import User
 
 
 class IUserRepository(ABC):
