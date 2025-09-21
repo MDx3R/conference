@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
-from idp.identity.application.interfaces.services.token_service import (
+from idp.identity.application.interfaces.services.token_intospector import (
     ITokenIntrospector,
 )
 from idp.identity.domain.value_objects.descriptor import IdentityDescriptor

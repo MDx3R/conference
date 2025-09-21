@@ -6,18 +6,18 @@ import pytest
 from common.application.exceptions import NotFoundError
 from common.domain.interfaces.clock import IClock
 from common.domain.value_objects.datetime import DateTime
-from idp.identity.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.interfaces.repositories.token_repository import (
+    IRefreshTokenRepository,
+)
+from idp.auth.infrastructure.services.jwt.token_issuer import JWTTokenIssuer
+from idp.auth.infrastructure.services.jwt.token_refresher import JWTTokenRefresher
+from idp.auth.infrastructure.services.jwt.token_revoker import JWTTokenRevoker
 from idp.identity.application.exceptions import (
     InvalidTokenError,
     TokenExpiredError,
     TokenRevokedError,
 )
-from idp.identity.application.interfaces.repositories.token_repository import (
-    IRefreshTokenRepository,
-)
-from idp.identity.infrastructure.services.jwt.token_issuer import JWTTokenIssuer
-from idp.identity.infrastructure.services.jwt.token_refresher import JWTTokenRefresher
-from idp.identity.infrastructure.services.jwt.token_revoker import JWTTokenRevoker
 
 
 @pytest.mark.asyncio

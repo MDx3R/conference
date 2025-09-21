@@ -1,92 +1,24 @@
-from dataclasses import asdict
 from typing import Annotated
+from uuid import uuid4
 
-from fastapi import APIRouter, Depends, Form, HTTPException, status
+from common.presentation.http.dto.response import IDResponse
+from fastapi import APIRouter, Depends
 from fastapi_utils.cbv import cbv
-from idp.identity.application.dtos.commands.login_command import LoginCommand
-from idp.identity.application.dtos.commands.logout_command import LogoutCommand
-from idp.identity.application.dtos.commands.refresh_token_command import (
-    RefreshTokenCommand,
-)
-from idp.identity.application.exceptions import (
-    InvalidPasswordError,
-    InvalidUsernameError,
-)
-from idp.identity.application.interfaces.usecases.command.login_use_case import (
-    ILoginUseCase,
-)
-from idp.identity.application.interfaces.usecases.command.logout_use_case import (
-    ILogoutUseCase,
-)
-from idp.identity.application.interfaces.usecases.command.refresh_token_use_case import (
-    IRefreshTokenUseCase,
-)
-from idp.identity.presentation.http.dto.response import AuthTokensResponse
 from idp.identity.presentation.http.fastapi.auth import (
     get_token,
     require_authenticated,
-    require_unauthenticated,
 )
 
 
-auth_router = APIRouter()
+identity_router = APIRouter()
 
 
-@cbv(auth_router)
-class AuthController:
-    login_use_case: ILoginUseCase = Depends()
-    logout_use_case: ILogoutUseCase = Depends()
-    refresh_token_use_case: IRefreshTokenUseCase = Depends()
-
-    @auth_router.post(
-        "/login",
-        response_model=AuthTokensResponse,
-        dependencies=[Depends(require_unauthenticated)],
-    )
-    async def login(
-        self,
-        username: str = Form(...),
-        password: str = Form(...),
-    ) -> AuthTokensResponse:
-        try:
-            result = await self.login_use_case.execute(
-                LoginCommand(username=username, password=password)
-            )
-            return AuthTokensResponse(**asdict(result))
-        except InvalidUsernameError as exc:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail={
-                    "error": "InvalidUsernameError",
-                    "username": exc.username,
-                    "message": str(exc),
-                },
-            ) from exc
-        except InvalidPasswordError as exc:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail={
-                    "error": "InvalidPasswordError",
-                    "user_id": str(exc.identity_id),
-                    "message": str(exc),
-                },
-            ) from exc
-
-    @auth_router.post(
-        "/logout",
-        status_code=status.HTTP_204_NO_CONTENT,
+@cbv(identity_router)
+class IdentityController:
+    @identity_router.post(
+        "/register",
+        response_model=IDResponse,
         dependencies=[Depends(require_authenticated)],
     )
-    async def logout(self, token: Annotated[str, Depends(get_token)]) -> None:
-        await self.logout_use_case.execute(LogoutCommand(refresh_token=token))
-
-    @auth_router.post(
-        "/refresh",
-        response_model=AuthTokensResponse,
-        dependencies=[Depends(require_authenticated)],
-    )
-    async def refresh(
-        self, token: Annotated[str, Depends(get_token)]
-    ) -> AuthTokensResponse:
-        result = await self.refresh_token_use_case.execute(RefreshTokenCommand(token))
-        return AuthTokensResponse(**asdict(result))
+    async def register(self, token: Annotated[str, Depends(get_token)]) -> IDResponse:
+        return IDResponse(id=uuid4())  # stub

@@ -2,12 +2,12 @@ from unittest.mock import AsyncMock, Mock
 from uuid import uuid4
 
 import pytest
-from idp.identity.application.dtos.commands.refresh_token_command import (
+from idp.auth.application.dtos.commands.refresh_token_command import (
     RefreshTokenCommand,
 )
-from idp.identity.application.dtos.models.auth_tokens import AuthTokens
-from idp.identity.application.interfaces.services.token_service import ITokenRefresher
-from idp.identity.application.usecases.command.refresh_token_use_case import (
+from idp.auth.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.interfaces.services.token_service import ITokenRefresher
+from idp.auth.application.usecases.command.refresh_token_use_case import (
     RefreshTokenUseCase,
 )
 
