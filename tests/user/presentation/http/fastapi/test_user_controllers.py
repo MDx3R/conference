@@ -4,7 +4,7 @@ from uuid import uuid4
 import pytest
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
-from idp.identity.application.interfaces.services.token_service import (
+from idp.identity.application.interfaces.services.token_intospector import (
     ITokenIntrospector,
 )
 from idp.identity.domain.value_objects.descriptor import IdentityDescriptor

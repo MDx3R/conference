@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from idp.identity.application.dtos.commands.login_command import LoginCommand
-from idp.identity.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.dtos.commands.login_command import LoginCommand
+from idp.auth.application.dtos.models.auth_tokens import AuthTokens
 
 
 class ILoginUseCase(ABC):

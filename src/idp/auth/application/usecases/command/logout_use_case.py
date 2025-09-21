@@ -1,8 +1,8 @@
-from idp.identity.application.dtos.commands.logout_command import LogoutCommand
-from idp.identity.application.interfaces.services.token_service import (
+from idp.auth.application.dtos.commands.logout_command import LogoutCommand
+from idp.auth.application.interfaces.services.token_service import (
     ITokenRevoker,
 )
-from idp.identity.application.interfaces.usecases.command.logout_use_case import (
+from idp.auth.application.interfaces.usecases.command.logout_use_case import (
     ILogoutUseCase,
 )
 

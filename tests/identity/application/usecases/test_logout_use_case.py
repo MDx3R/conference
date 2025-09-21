@@ -1,9 +1,9 @@
 from unittest.mock import AsyncMock, Mock
 
 import pytest
-from idp.identity.application.dtos.commands.logout_command import LogoutCommand
-from idp.identity.application.interfaces.services.token_service import ITokenRevoker
-from idp.identity.application.usecases.command.logout_use_case import LogoutUseCase
+from idp.auth.application.dtos.commands.logout_command import LogoutCommand
+from idp.auth.application.interfaces.services.token_service import ITokenRevoker
+from idp.auth.application.usecases.command.logout_use_case import LogoutUseCase
 
 
 @pytest.mark.asyncio

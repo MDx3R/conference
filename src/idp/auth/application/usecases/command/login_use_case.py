@@ -1,5 +1,9 @@
-from idp.identity.application.dtos.commands.login_command import LoginCommand
-from idp.identity.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.dtos.commands.login_command import LoginCommand
+from idp.auth.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.interfaces.services.token_service import ITokenIssuer
+from idp.auth.application.interfaces.usecases.command.login_use_case import (
+    ILoginUseCase,
+)
 from idp.identity.application.exceptions import (
     InvalidPasswordError,
     InvalidUsernameError,
@@ -9,10 +13,6 @@ from idp.identity.application.interfaces.services.identity_service import (
 )
 from idp.identity.application.interfaces.services.password_hash_service import (
     IPasswordHasher,
-)
-from idp.identity.application.interfaces.services.token_service import ITokenIssuer
-from idp.identity.application.interfaces.usecases.command.login_use_case import (
-    ILoginUseCase,
 )
 
 

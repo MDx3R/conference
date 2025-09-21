@@ -4,25 +4,25 @@ from uuid import uuid4
 import pytest
 from fastapi import FastAPI, status
 from fastapi.testclient import TestClient
-from idp.identity.application.dtos.commands.login_command import LoginCommand
-from idp.identity.application.dtos.commands.logout_command import LogoutCommand
-from idp.identity.application.dtos.commands.refresh_token_command import (
+from idp.auth.application.dtos.commands.login_command import LoginCommand
+from idp.auth.application.dtos.commands.logout_command import LogoutCommand
+from idp.auth.application.dtos.commands.refresh_token_command import (
     RefreshTokenCommand,
 )
-from idp.identity.application.dtos.models.auth_tokens import AuthTokens
-from idp.identity.application.interfaces.usecases.command.login_use_case import (
+from idp.auth.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.interfaces.usecases.command.login_use_case import (
     ILoginUseCase,
 )
-from idp.identity.application.interfaces.usecases.command.logout_use_case import (
+from idp.auth.application.interfaces.usecases.command.logout_use_case import (
     ILogoutUseCase,
 )
-from idp.identity.application.interfaces.usecases.command.refresh_token_use_case import (
+from idp.auth.application.interfaces.usecases.command.refresh_token_use_case import (
     IRefreshTokenUseCase,
 )
+from idp.auth.presentation.http.fastapi.controllers import auth_router
 from idp.identity.presentation.http.fastapi.auth import (
     oauth2_scheme_no_error,
 )
-from idp.identity.presentation.http.fastapi.controllers import auth_router
 
 
 @pytest.mark.asyncio
