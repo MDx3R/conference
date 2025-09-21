@@ -1,11 +1,16 @@
 from uuid import UUID
 
-from idp.auth.application.exceptions import InvalidPasswordError, InvalidUsernameError
+from common.application.exceptions import DuplicateEntryError
 from idp.identity.application.dtos.commands.create_identity_command import (
     CreateIdentityCommand,
 )
 from idp.identity.application.dtos.commands.verify_password_command import (
     VerifyPasswordCommand,
+)
+from idp.identity.application.exceptions import (
+    InvalidPasswordError,
+    InvalidUsernameError,
+    UsernameAlreadyTakenError,
 )
 from idp.identity.application.interfaces.repositories.identity_repository import (
     IIdentityRepository,
@@ -38,9 +43,16 @@ class IdentityService(IIdentityService):
         return await self.identity_repository.get_by_username(username)
 
     async def create_identity(self, command: CreateIdentityCommand) -> UUID:
+        if await self.exists_by_username(command.username):
+            raise UsernameAlreadyTakenError(command.username)
+
         identity = self.identity_factory.create(command.username, command.password)
 
-        await self.identity_repository.add(identity)
+        try:
+            await self.identity_repository.add(identity)
+        except DuplicateEntryError as exc:
+            raise UsernameAlreadyTakenError(command.username) from exc
+
         return identity.identity_id
 
     async def verify_password(self, command: VerifyPasswordCommand) -> UUID:

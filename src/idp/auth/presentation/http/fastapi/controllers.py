@@ -8,10 +8,6 @@ from idp.auth.application.dtos.commands.logout_command import LogoutCommand
 from idp.auth.application.dtos.commands.refresh_token_command import (
     RefreshTokenCommand,
 )
-from idp.auth.application.exceptions import (
-    InvalidPasswordError,
-    InvalidUsernameError,
-)
 from idp.auth.application.interfaces.usecases.command.login_use_case import (
     ILoginUseCase,
 )
@@ -22,6 +18,10 @@ from idp.auth.application.interfaces.usecases.command.refresh_token_use_case imp
     IRefreshTokenUseCase,
 )
 from idp.auth.presentation.http.dto.response import AuthTokensResponse
+from idp.identity.application.exceptions import (
+    InvalidPasswordError,
+    InvalidUsernameError,
+)
 from idp.identity.presentation.http.fastapi.auth import (
     get_token,
     require_authenticated,
