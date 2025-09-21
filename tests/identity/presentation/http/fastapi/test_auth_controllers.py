@@ -10,6 +10,7 @@ from idp.auth.application.dtos.commands.refresh_token_command import (
     RefreshTokenCommand,
 )
 from idp.auth.application.dtos.models.auth_tokens import AuthTokens
+from idp.auth.application.exceptions import InvalidPasswordError, InvalidUsernameError
 from idp.auth.application.interfaces.usecases.command.login_use_case import (
     ILoginUseCase,
 )
@@ -91,6 +92,42 @@ class TestAuthController:
         # Assert
         assert response.status_code == status.HTTP_403_FORBIDDEN
         assert response.json() == {"detail": "You are already logged in"}
+
+    async def test_login_invalid_username(self):
+        # Arrange
+        username = "invalid_username"
+        password = "testpass"
+
+        self.login_use_case.execute.side_effect = InvalidUsernameError(username)
+
+        # Act
+        response = self.client.post(
+            "/login",
+            data={"username": username, "password": password},
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+        )
+
+        # Assert
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json()["detail"]["error"] == "InvalidUsernameError"
+
+    async def test_login_invalid_password(self):
+        # Arrange
+        username = "valid_username"
+        password = "invalid_pass"
+
+        self.login_use_case.execute.side_effect = InvalidPasswordError(uuid4())
+
+        # Act
+        response = self.client.post(
+            "/login",
+            data={"username": username, "password": password},
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+        )
+
+        # Assert
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json()["detail"]["error"] == "InvalidPasswordError"
 
     async def test_logout_success(self):
         # Arrange
