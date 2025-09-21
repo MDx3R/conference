@@ -8,9 +8,14 @@ from idp.identity.presentation.http.fastapi.auth import (
     get_descriptor,
     require_authenticated,
 )
-from user.application.dtos.queries.get_user_be_id_query import GetUserByIdQuery
-from user.application.interfaces.usecases.query.get_self_use_case import IGetSelfUseCase
-from user.presentation.http.dto.response import UserResponse
+
+from conference.user.application.dtos.queries.get_user_be_id_query import (
+    GetUserByIdQuery,
+)
+from conference.user.application.interfaces.usecases.query.get_self_use_case import (
+    IGetSelfUseCase,
+)
+from conference.user.presentation.http.dto.response import UserResponse
 
 
 query_router = APIRouter()

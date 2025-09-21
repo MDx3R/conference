@@ -1,11 +1,11 @@
-from user.application.dtos.queries.get_user_be_id_query import (
+from conference.user.application.dtos.queries.get_user_be_id_query import (
     GetUserByIdQuery,
 )
-from user.application.dtos.responses.user_dto import UserDTO
-from user.application.interfaces.repositories.user_read_repository import (
+from conference.user.application.dtos.responses.user_dto import UserDTO
+from conference.user.application.interfaces.repositories.user_read_repository import (
     IUserReadRepository,
 )
-from user.application.interfaces.usecases.query.get_self_use_case import (
+from conference.user.application.interfaces.usecases.query.get_self_use_case import (
     IGetSelfUseCase,
 )
 

@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-from user.application.dtos.queries.get_user_be_id_query import (
+from conference.user.application.dtos.queries.get_user_be_id_query import (
     GetUserByIdQuery,
 )
-from user.application.dtos.responses.user_dto import UserDTO
+from conference.user.application.dtos.responses.user_dto import UserDTO
 
 
 class IGetSelfUseCase(ABC):

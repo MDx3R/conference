@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from user.application.read_models.user_read_model import UserReadModel
+from conference.user.application.read_models.user_read_model import UserReadModel
 
 
 class IUserReadRepository(ABC):
