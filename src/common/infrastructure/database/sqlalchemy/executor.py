@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import TypeVar
+from typing import Any, TypeVar, overload
 
 from common.infrastructure.database.sqlalchemy.models.base import Base
 from common.infrastructure.database.sqlalchemy.unit_of_work import UnitOfWork
@@ -20,7 +20,7 @@ class QueryExecutor:
     async def execute_scalar(
         self,
         statement: (
-            Select[tuple[RESULT, ...]]
+            Select[tuple[RESULT]]
             | Insert
             | Update
             | Delete
@@ -33,7 +33,7 @@ class QueryExecutor:
     async def execute_scalar_one(
         self,
         statement: (
-            Select[tuple[RESULT, ...]]
+            Select[tuple[RESULT]]
             | Insert
             | Update
             | Delete
@@ -46,7 +46,7 @@ class QueryExecutor:
     async def execute_scalar_many(
         self,
         statement: (
-            Select[tuple[RESULT, ...]]
+            Select[tuple[RESULT]]
             | Insert
             | Update
             | Delete
@@ -68,20 +68,33 @@ class QueryExecutor:
     ) -> Sequence[Row[tuple[RESULT]]]:
         return (await self.execute(statement)).unique().all()
 
+    @overload
     async def execute(
-        self,
-        statement: (
-            Select[tuple[RESULT, ...]]
-            | Insert
-            | Update
-            | Delete
-            | ReturningInsert[tuple[RESULT]]
-            | ReturningUpdate[tuple[RESULT]]
-        ),
-    ) -> Result[tuple[RESULT]]:
+        self, statement: Select[tuple[RESULT]]
+    ) -> Result[tuple[RESULT]]: ...
+    @overload
+    async def execute(
+        self, statement: Select[tuple[RESULT, ...]]
+    ) -> Result[tuple[RESULT]]: ...
+    @overload
+    async def execute(  # type: ignore[overload-overlap]
+        self, statement: ReturningInsert[tuple[RESULT]]
+    ) -> Result[tuple[RESULT]]: ...
+    @overload
+    async def execute(  # type: ignore[overload-overlap]
+        self, statement: ReturningUpdate[tuple[RESULT]]
+    ) -> Result[tuple[RESULT]]: ...
+    @overload
+    async def execute(self, statement: Insert) -> Result[tuple[()]]: ...
+    @overload
+    async def execute(self, statement: Update) -> Result[tuple[()]]: ...
+    @overload
+    async def execute(self, statement: Delete) -> Result[tuple[()]]: ...
+
+    async def execute(self, statement: Any) -> Result[Any]:
         async with self.uow.get_session() as session:
             result = await session.execute(statement)
-            return result
+            return result  # type: ignore[no-any-return]
 
     async def add(
         self,
