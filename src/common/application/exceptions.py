@@ -23,6 +23,11 @@ class NotFoundError(ApplicationError):
 class RepositoryError(ApplicationError): ...
 
 
+class OptimisticLockError(RepositoryError):
+    def __init__(self, message: str = "Concurrent update"):
+        super().__init__(message)
+
+
 class DuplicateEntryError(RepositoryError):
     def __init__(self, field: str, value: str):
         self.field = field
