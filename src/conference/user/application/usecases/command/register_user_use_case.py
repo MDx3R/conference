@@ -16,7 +16,7 @@ from conference.user.application.interfaces.repositories.user_repository import 
 from conference.user.application.interfaces.usecases.command.register_user_use_case import (
     IRegisterUserUseCase,
 )
-from conference.user.domain.interfaces.user_factory import IUserFactory
+from conference.user.domain.interfaces.user_factory import IUserFactory, UserFactoryDTO
 
 
 class RegisterUserUseCase(IRegisterUserUseCase):
@@ -36,7 +36,17 @@ class RegisterUserUseCase(IRegisterUserUseCase):
             CreateIdentityCommand(command.username, command.password)
         )
 
-        user = self.user_factory.create(identity_id, command.username)
+        user = self.user_factory.create(
+            identity_id,
+            UserFactoryDTO(
+                surname=command.surname,
+                name=command.name,
+                patronymic=command.patronymic,
+                phone_number=command.phone_number,
+                country=command.country,
+                city=command.city,
+            ),
+        )
 
         await self.user_repository.add(user)
         return user.user_id
