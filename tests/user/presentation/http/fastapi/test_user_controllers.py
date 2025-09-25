@@ -38,7 +38,25 @@ class TestUserController:
     async def test_me_success(self):
         # Arrange
         user_id = uuid4()
-        mock_response = UserDTO(user_id, username="testuser")
+        mock_response = UserDTO(
+            user_id=user_id,
+            username="testuser",
+            surname="Иванов",
+            name="Иван",
+            patronymic="Иванович",
+            phone_number="+79998887766",
+            home_number=None,
+            academic_degree=None,
+            academic_title=None,
+            research_area=None,
+            organization=None,
+            department=None,
+            position=None,
+            country="Россия",
+            city="Москва",
+            postal_code=None,
+            street_address=None,
+        )
         self.get_self_use_case.execute.return_value = mock_response
         self.token_introspector.extract_user.return_value = IdentityDescriptor(
             user_id, mock_response.username
@@ -47,7 +65,7 @@ class TestUserController:
         # Act
         response = self.client.get(
             "/me",
-            headers={"Authorization": "Bearer authenticated_token"},  # Token
+            headers={"Authorization": "Bearer authenticated_token"},
         )
 
         # Assert
@@ -55,6 +73,21 @@ class TestUserController:
         assert response.json() == {
             "user_id": str(user_id),
             "username": "testuser",
+            "surname": "Иванов",
+            "name": "Иван",
+            "patronymic": "Иванович",
+            "phone_number": "+79998887766",
+            "home_number": None,
+            "academic_degree": None,
+            "academic_title": None,
+            "research_area": None,
+            "organization": None,
+            "department": None,
+            "position": None,
+            "country": "Россия",
+            "city": "Москва",
+            "postal_code": None,
+            "street_address": None,
         }
         self.get_self_use_case.execute.assert_awaited_once_with(
             GetUserByIdQuery(user_id)
