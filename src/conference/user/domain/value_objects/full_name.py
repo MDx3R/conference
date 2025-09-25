@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Self
 
 from common.domain.exceptions import InvariantViolationError
 
@@ -21,6 +22,6 @@ class FullName:
     def full(self) -> str:
         return f"{self.surname} {self.name} {self.patronymic or ''}".strip()
 
-    @staticmethod
-    def create(surname: str, name: str, patronymic: str | None) -> "FullName":
-        return FullName(surname=surname, name=name, patronymic=patronymic)
+    @classmethod
+    def create(cls, surname: str, name: str, patronymic: str | None) -> Self:
+        return cls(surname=surname, name=name, patronymic=patronymic)
