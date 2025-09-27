@@ -8,6 +8,7 @@ from common.domain.value_objects.datetime import DateTime
 class TestDateTime:
     @pytest.fixture(autouse=True)
     def setup(self):
+        self.integer = 123
         self.aware_dt = datetime(2024, 1, 1, 12, 0, 0, tzinfo=UTC)
         self.aware_dt_other = datetime(2024, 1, 2, 12, 0, 0, tzinfo=UTC)
 
@@ -81,8 +82,8 @@ class TestDateTime:
 
     def test_eq_and_ne_with_other_types(self):
         dt = DateTime(self.aware_dt)
-        assert dt != 123  # NotImplemented
-        assert not (dt == 123)
+        assert dt != self.integer  # NotImplemented
+        assert not (dt == self.integer)
 
     def test_lt_le_gt_ge_with_std_datetime_types(self):
         dt = DateTime(self.aware_dt)
@@ -100,16 +101,16 @@ class TestDateTime:
 
         # __lt__
         with pytest.raises(TypeError):
-            assert dt < 123
+            assert dt < self.integer
         # __le__
         with pytest.raises(TypeError):
-            assert dt <= 123
+            assert dt <= self.integer
         # __gt__
         with pytest.raises(TypeError):
-            assert dt > 123
+            assert dt > self.integer
         # __ge__
         with pytest.raises(TypeError):
-            assert dt >= 123
+            assert dt >= self.integer
 
     def test_add_notimplemented(self):
         dt = DateTime(self.aware_dt)
