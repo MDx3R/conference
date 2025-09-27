@@ -14,7 +14,7 @@ from idp.identity.application.usecases.command.create_identity_use_case import (
 
 
 @pytest.mark.asyncio
-class TestCtUseCase:
+class TestCreateIdentityUseCase:
     @pytest.fixture(autouse=True)
     def setup(self):
         self.identity_id = uuid4()

@@ -46,7 +46,8 @@ class IdentityService(IIdentityService):
         if await self.exists_by_username(command.username):
             raise UsernameAlreadyTakenError(command.username)
 
-        identity = self.identity_factory.create(command.username, command.password)
+        password_hash = self.password_hasher.hash(command.password)
+        identity = self.identity_factory.create(command.username, password_hash)
 
         try:
             await self.identity_repository.add(identity)
