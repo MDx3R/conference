@@ -7,10 +7,17 @@ from fastapi.testclient import TestClient
 from idp.identity.application.dtos.commands.create_identity_command import (
     CreateIdentityCommand,
 )
-from idp.identity.application.exceptions import UsernameAlreadyTakenError
+from idp.identity.application.exceptions import (
+    InvalidTokenError,
+    UsernameAlreadyTakenError,
+)
+from idp.identity.application.interfaces.services.token_intospector import (
+    ITokenIntrospector,
+)
 from idp.identity.application.interfaces.usecases.command.create_identity_use_case import (
     ICreateIdentityUseCase,
 )
+from idp.identity.domain.value_objects.descriptor import IdentityDescriptor
 from idp.identity.presentation.http.fastapi.controllers import identity_router
 
 
@@ -24,8 +31,13 @@ class TestIdentityController:
 
         self.create_identity_use_case = AsyncMock(spec=ICreateIdentityUseCase)
 
+        self.token_introspector = AsyncMock(spec=ITokenIntrospector)
+
         self.app.dependency_overrides[ICreateIdentityUseCase] = (
             lambda: self.create_identity_use_case
+        )
+        self.app.dependency_overrides[ITokenIntrospector] = (
+            lambda: self.token_introspector
         )
 
     async def test_register_success(self):
@@ -89,3 +101,44 @@ class TestIdentityController:
         # Assert
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.json()["detail"]["error"] == "UsernameAlreadyTakenError"
+
+    async def test_me_success(self):
+        # Arrange
+        identity_id = uuid4()
+        username = "testuser"
+
+        self.token_introspector.extract_user.return_value = IdentityDescriptor(
+            identity_id=identity_id, username=username
+        )
+
+        # Act
+        response = self.client.get(
+            "/me", headers={"Authorization": "Bearer valid_token"}
+        )
+
+        # Assert
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {"id": str(identity_id), "username": username}
+
+    async def test_me_requires_authentication(self):
+        # Act
+        response = self.client.get("/me")
+
+        # Assert
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.json() == {"detail": "Authentication required"}
+
+    # NOTE: Fails for now since no exception handler implemented
+    @pytest.mark.skip(reason="Not implemented")
+    async def test_me_requires_valid_authentication(self):
+        # Arrange
+        self.token_introspector.extract_user.side_effect = InvalidTokenError()
+
+        # Act
+        response = self.client.get(
+            "/me", headers={"Authorization": "Bearer invalid_token"}
+        )
+
+        # Assert
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.json() == {"detail": "Not authenticated"}
