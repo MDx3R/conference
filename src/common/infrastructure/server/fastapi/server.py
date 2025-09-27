@@ -89,8 +89,6 @@ class FastAPIServer:
         )
         self.logger.info(f"router registered: prefix={prefix}, tags={tags}")
 
-    def override_dependency(
-        self, interface: type[DEPENDENCY], dependency: DEPENDENCY
-    ) -> None:
+    def override_dependency(self, interface: type[Any], dependency: Any) -> None:
         self._app.dependency_overrides[interface] = lambda: dependency
         self.logger.debug(f"dependency overridden: {interface.__name__}")
