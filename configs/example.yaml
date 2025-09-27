@@ -1,0 +1,20 @@
+env: local
+auth:
+  secret_key: "super-secret"
+  algorithm: "HS256"
+  issuer: "conference"
+  access_token_ttl: 1800
+  refresh_token_ttl: 604800
+
+logger:
+  level: "INFO"
+  format: "json"
+
+db:
+  db_name: "mydb"
+  db_user: "postgres"
+  db_pass: "password"
+  db_host: "localhost"
+  db_port: 5433
+  db_driver: "postgresql"
+  db_extension: "asyncpg"
