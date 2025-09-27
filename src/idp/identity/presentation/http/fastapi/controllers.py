@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from common.presentation.http.dto.response import IDResponse
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_utils.cbv import cbv
@@ -8,8 +10,14 @@ from idp.identity.application.exceptions import UsernameAlreadyTakenError
 from idp.identity.application.interfaces.usecases.command.create_identity_use_case import (
     ICreateIdentityUseCase,
 )
+from idp.identity.domain.value_objects.descriptor import IdentityDescriptor
 from idp.identity.presentation.http.dto.request import RegisterUserRequest
-from idp.identity.presentation.http.fastapi.auth import require_unauthenticated
+from idp.identity.presentation.http.dto.response import IdentityResponse
+from idp.identity.presentation.http.fastapi.auth import (
+    get_descriptor,
+    require_authenticated,
+    require_unauthenticated,
+)
 
 
 identity_router = APIRouter()
@@ -19,11 +27,13 @@ identity_router = APIRouter()
 class IdentityController:
     create_identity_use_case: ICreateIdentityUseCase = Depends()
 
-    @identity_router.post(
-        "/register",
-        dependencies=[Depends(require_unauthenticated)],
-        response_model=IDResponse,
-    )
+    @identity_router.get("/me", dependencies=[Depends(require_authenticated)])
+    async def me(
+        self, descriptor: Annotated[IdentityDescriptor, Depends(get_descriptor)]
+    ) -> IdentityResponse:
+        return IdentityResponse(id=descriptor.identity_id, username=descriptor.username)
+
+    @identity_router.post("/register", dependencies=[Depends(require_unauthenticated)])
     async def register(self, request: RegisterUserRequest) -> IDResponse:
         try:
             identity_id = await self.create_identity_use_case.execute(
