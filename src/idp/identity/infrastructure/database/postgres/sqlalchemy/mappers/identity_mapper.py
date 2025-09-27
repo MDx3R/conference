@@ -18,7 +18,7 @@ class IdentityMapper:
     @classmethod
     def to_persistence(cls, user: Identity) -> IdentityBase:
         return IdentityBase(
-            user_id=user.identity_id,
+            identity_id=user.identity_id,
             username=user.username.value,
             password=user.password.value,
         )
