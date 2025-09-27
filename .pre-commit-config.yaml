@@ -17,3 +17,4 @@ repos:
           - bcrypt>=4.3.0,<5.0.0
           - python-jose>=3.5.0,<4.0.0
           - types-python-jose>=3.5.0,<4.0.0
+          - dependency-injector>=4.48.2,<5.0.0
