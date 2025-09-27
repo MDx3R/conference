@@ -34,6 +34,7 @@ class TestIdentityService:
         self.identity_id = uuid4()
         self.username = "testuser"
         self.password = "testpass"
+        self.password_hash = "password_hash"
         self.identity = Identity(
             self.identity_id, Username(self.username), Password(self.password)
         )
@@ -47,6 +48,7 @@ class TestIdentityService:
 
         self.password_hasher = Mock(spec=IPasswordHasher)
         self.password_hasher.verify = Mock(return_value=True)
+        self.password_hasher.hash = Mock(return_value=self.password_hash)
 
         self.service = IdentityService(
             self.identity_repository, self.identity_factory, self.password_hasher
@@ -80,11 +82,12 @@ class TestIdentityService:
 
         # Assert
         assert result == self.identity_id
+        self.password_hasher.hash.assert_called_once_with(self.password)
         self.identity_repository.exists_by_username.assert_called_once_with(
             self.username
         )
         self.identity_factory.create.assert_called_once_with(
-            self.username, self.password
+            self.username, self.password_hash
         )
         self.identity_repository.add.assert_awaited_once_with(self.identity)
 
