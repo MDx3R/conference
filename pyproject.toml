@@ -103,4 +103,4 @@ plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
 module = "tests.*"
-disable_error_code = ["no-untyped-def", "misc"]
+disable_error_code = ["no-untyped-def", "misc", "no-any-unimported"]
