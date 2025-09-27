@@ -52,7 +52,7 @@ line-length = 88
 target-version = "py311"
 src = ["src/conference"]
 include = ["*.py", "*.pyi"]
-exclude = ["build", "dist", ".venv", ".git", "__pycache__"]
+exclude = ["build", "dist", ".venv", ".git", "__pycache__", "migrations/versions"]
 fix = true
 
 [tool.ruff.lint]
