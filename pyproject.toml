@@ -49,19 +49,20 @@ fix = true
 
 [tool.ruff.lint]
 select = [
-  "E",  # ошибки стиля (flake8)
-  "F",  # синтаксические ошибки
-  "I",  # сортировка импортов (isort)
-  "B",  # баги (flake8-bugbear)
-  "C",  # complexity
-  "D",  # docstrings (pydocstyle)
-  "N",  # pep8-naming (имена переменных, классов)
-  "UP", # pyupgrade (новый синтаксис)
-  "C90",# McCabe (сложность)
-  "PL", # pylint совместимость
-  "PT", # типы (частично mypy)
-  "RUF", # собственные правила Ruff
-  "FAST001", # FastAPI
+  "E",      # ошибки стиля (flake8) 
+  "F",      # синтаксические ошибки
+  "I",      # сортировка импортов (isort)
+  "B",      # баги (flake8-bugbear)
+  "C",      # complexity
+  "D",      # docstrings (pydocstyle)
+  "N",      # pep8-naming (имена переменных, классов)
+  "UP",     # pyupgrade (новый синтаксис)
+  "C90",    # McCabe (сложность)
+  "PL",     # pylint совместимость
+  "PT",     # типы (частично mypy)
+  "RUF",    # собственные правила Ruff
+  "SLF001", # private member access
+  "FAST001",# FastAPI
   "FAST002",
   "FAST003",
 ]
