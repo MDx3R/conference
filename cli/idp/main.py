@@ -50,7 +50,7 @@ def main() -> App:
         identity_repository=identity_container.identity_repository,
     )
 
-    identity_container.override_token_introspector(token_container.token_introspector)
+    identity_container.token_introspector.override(token_container.token_introspector)
 
     auth_container = AuthContainer(
         identity_service=identity_container.identity_service,
