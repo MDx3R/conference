@@ -1,0 +1,20 @@
+env: local
+auth:
+  secret_key: "super-secret"
+  algorithm: "HS256"
+  issuer: "my-service"
+  access_token_ttl: 1800
+  refresh_token_ttl: 604800
+
+logger:
+  level: "INFO"
+  format: "json"
+
+db:
+  db_name: "appdb"
+  db_user: "user"
+  db_pass: "password"
+  db_host: "localhost"
+  db_port: 5432
+  db_driver: "postgresql"
+  db_extension: "asyncpg"
