@@ -1,10 +1,11 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Any
 from uuid import UUID
 
 from common.domain.interfaces.clock import IClock
 from common.domain.interfaces.token_generator import ITokenGenerator
 from common.domain.interfaces.uuid_generator import IUUIDGenerator
+from common.domain.value_objects.datetime import DateTime
 from idp.auth.application.dtos.models.auth_tokens import AuthTokens
 from idp.auth.application.interfaces.repositories.token_repository import (
     IRefreshTokenRepository,
@@ -40,11 +41,11 @@ class JWTTokenIssuer(ITokenIssuer):
         return AuthTokens.create(identity_id, access.value, refresh.value)
 
     def issue_access_token(self, identity_id: UUID) -> Token:
-        issued_at = self.clock.now().value
+        issued_at = self.clock.now()
         expires_at = self.expires_at(issued_at, self.config.access_token_ttl)
 
         claims = TokenClaims.create(
-            identity_id, self.config.issuer, issued_at, expires_at
+            identity_id, self.config.issuer, issued_at.value, expires_at.value
         )
         token_str = self.create_jwt_token(claims)
 
@@ -58,7 +59,7 @@ class JWTTokenIssuer(ITokenIssuer):
         )
 
     def issue_refresh_token(self, user_id: UUID) -> Token:
-        issued_at = self.clock.now().value
+        issued_at = self.clock.now()
         expires_at = self.expires_at(issued_at, self.config.refresh_token_ttl)
 
         token_value = self.token_generator.secure(64)
@@ -87,5 +88,5 @@ class JWTTokenIssuer(ITokenIssuer):
             algorithm=self.config.algorithm,
         )
 
-    def expires_at(self, issued_at: datetime, ttl: timedelta) -> datetime:
+    def expires_at(self, issued_at: DateTime, ttl: timedelta) -> DateTime:
         return issued_at + ttl

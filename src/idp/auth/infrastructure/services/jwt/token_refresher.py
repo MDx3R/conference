@@ -32,7 +32,7 @@ class JWTTokenRefresher(ITokenRefresher):
             token = await self.refresh_token_repository.get(refresh_token)
         except NotFoundError as e:
             raise InvalidTokenError from e
-        if token.is_expired(self.clock.now().value):
+        if token.is_expired(self.clock.now()):
             raise TokenExpiredError()
         if token.is_revoked():
             raise TokenRevokedError()

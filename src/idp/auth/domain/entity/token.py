@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
-from datetime import datetime
 from enum import Enum
 from typing import Self
 from uuid import UUID
+
+from common.domain.value_objects.datetime import DateTime
 
 
 class TokenTypeEnum(str, Enum):
@@ -16,8 +17,8 @@ class Token:
     identity_id: UUID
     value: str
     token_type: TokenTypeEnum
-    issued_at: datetime
-    expires_at: datetime
+    issued_at: DateTime
+    expires_at: DateTime
     revoked: bool
     version: int = field(default=1, kw_only=True)
 
@@ -27,7 +28,7 @@ class Token:
     def is_refresh(self) -> bool:
         return self.token_type == TokenTypeEnum.REFRESH
 
-    def is_expired(self, now: datetime) -> bool:
+    def is_expired(self, now: DateTime) -> bool:
         return self.expires_at < now
 
     def is_revoked(self) -> bool:
@@ -37,14 +38,14 @@ class Token:
         self.revoked = True
 
     @classmethod
-    def create(
+    def create(  # noqa: PLR0913
         cls,
         token_id: UUID,
         identity_id: UUID,
         value: str,
         token_type: TokenTypeEnum,
-        issued_at: datetime,
-        expires_at: datetime,
+        issued_at: DateTime,
+        expires_at: DateTime,
     ) -> Self:
         return cls(
             token_id=token_id,
