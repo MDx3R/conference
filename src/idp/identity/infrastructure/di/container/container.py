@@ -34,3 +34,8 @@ class IdentityContainer(containers.DeclarativeContainer):
     create_identity_use_case = providers.Singleton(
         CreateIdentityUseCase, identity_service
     )
+
+    def override_token_introspector(
+        self, token_introspector_provider: providers.Provider[Any]
+    ) -> None:
+        self.token_introspector.override(token_introspector_provider)
