@@ -9,11 +9,6 @@ from conference.participant.domain.interfaces.user_factory import (
     ParticipantFactoryDTO,
 )
 from conference.participant.domain.value_objects.about import About
-from conference.participant.domain.value_objects.enums import (
-    AcademicDegree,
-    AcademicTitle,
-    ResearchArea,
-)
 from conference.participant.domain.value_objects.full_name import FullName
 from conference.participant.domain.value_objects.workplace import Workplace
 
@@ -46,14 +41,8 @@ class ParticipantFactory(IParticipantFactory):
                 position=data.position,
             )
 
-        academic_degree = data.academic_degree or AcademicDegree.NONE
-        academic_title = data.academic_title or AcademicTitle.NONE
-        research_area = data.research_area or ResearchArea.NONE
-        about = About(
-            academic_degree=academic_degree,
-            academic_title=academic_title,
-            research_area=research_area,
-            workplace=workplace,
+        about = About.create(
+            data.academic_degree, data.academic_title, data.research_area, workplace
         )
 
         return Participant.create(
