@@ -10,3 +10,10 @@ class Currency(Enum):
     RUB = "RUB"
     USD = "USD"
     EUR = "EUR"
+
+
+class ConferenceStatus(Enum):
+    DRAFT = "Черновик"
+    ACTIVE = "Активна"
+    CANCELLED = "Отменена"
+    COMPLETED = "Завершена"
