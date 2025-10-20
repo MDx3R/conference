@@ -40,13 +40,12 @@ class AuthController:
 
     @auth_router.post(
         "/login",
-        response_model=AuthTokensResponse,
         dependencies=[Depends(require_unauthenticated)],
     )
     async def login(
         self,
-        username: str = Form(...),
-        password: str = Form(...),
+        username: Annotated[str, Form()],
+        password: Annotated[str, Form()],
     ) -> AuthTokensResponse:
         try:
             result = await self.login_use_case.execute(
@@ -82,7 +81,6 @@ class AuthController:
 
     @auth_router.post(
         "/refresh",
-        response_model=AuthTokensResponse,
         dependencies=[Depends(require_authenticated)],
     )
     async def refresh(
