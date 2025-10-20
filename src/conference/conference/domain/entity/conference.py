@@ -50,6 +50,39 @@ class Conference:
             organizer_id=organizer_id,
         )
 
+    def update(
+        self,
+        title: str | None = None,
+        description: ConferenceDescription | None = None,
+        dates: ConferenceDates | None = None,
+        location: str | None = None,
+        max_participants: int | None = None,
+    ) -> None:
+        if self.status == ConferenceStatus.COMPLETED:
+            raise InvariantViolationError("Cannot update completed conference")
+
+        if self.status == ConferenceStatus.CANCELLED:
+            raise InvariantViolationError("Cannot update cancelled conference")
+
+        if title is not None:
+            if not title.strip():
+                raise InvariantViolationError("Conference title cannot be empty")
+            self.title = title
+
+        if description is not None:
+            self.description = description
+
+        if dates is not None:
+            self.dates = dates
+
+        if location is not None:
+            self.location = location
+
+        if max_participants is not None:
+            if max_participants <= 0:
+                raise InvariantViolationError("Max participants must be positive")
+            self.max_participants = max_participants
+
     def publish(self) -> None:
         if self.status != ConferenceStatus.DRAFT:
             raise InvariantViolationError("Only draft conferences can be published")

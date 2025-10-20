@@ -6,6 +6,7 @@ from uuid import UUID
 @dataclass(frozen=True)
 class UpdateConferenceCommand:
     conference_id: UUID
+    organizer_id: UUID
     title: str | None = None
     short_description: str | None = None
     full_description: str | None = None

@@ -7,6 +7,15 @@ class ConferenceNotFoundError(NotFoundError):
     pass
 
 
+class NotConferenceOrganizerError(ApplicationError):
+    def __init__(self, conference_id: UUID, user_id: UUID) -> None:
+        super().__init__(
+            f"User {user_id} is not the organizer of conference {conference_id}"
+        )
+        self.conference_id = conference_id
+        self.user_id = user_id
+
+
 class ConferenceFullError(ApplicationError):
     def __init__(self, conference_id: UUID) -> None:
         super().__init__(f"Conference {conference_id} has reached maximum capacity")
