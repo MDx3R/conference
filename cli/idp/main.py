@@ -15,7 +15,7 @@ def main() -> App:
     config = AppConfig.load()
 
     logger = LoggerFactory.create("conference", config.env, config.logger)
-    logger.info("logger initialized")
+    logger.info("conference logger initialized")
 
     log_config(logger, config)
 
