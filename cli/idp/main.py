@@ -14,7 +14,7 @@ from idp.identity.infrastructure.di.container.container import IdentityContainer
 def main() -> App:
     config = AppConfig.load()
 
-    logger = LoggerFactory.create(None, config.env, config.logger)
+    logger = LoggerFactory.create("conference", config.env, config.logger)
     logger.info("logger initialized")
 
     log_config(logger, config)
