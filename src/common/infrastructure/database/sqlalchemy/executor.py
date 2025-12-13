@@ -4,6 +4,7 @@ from typing import Any, TypeVar, overload
 from common.infrastructure.database.sqlalchemy.models.base import Base
 from common.infrastructure.database.sqlalchemy.unit_of_work import UnitOfWork
 from sqlalchemy import Delete, Insert, Result, Row, Select, Update
+from sqlalchemy.sql import Executable
 from sqlalchemy.sql.dml import (
     ReturningInsert,
     ReturningUpdate,
@@ -91,10 +92,10 @@ class QueryExecutor:
     @overload
     async def execute(self, statement: Delete) -> Result[tuple[()]]: ...
 
-    async def execute(self, statement: Any) -> Result[Any]:
+    async def execute(self, statement: Executable) -> Result[Any]:
         async with self.uow.get_session() as session:
             result = await session.execute(statement)
-            return result  # type: ignore[no-any-return]
+            return result
 
     async def add(
         self,
