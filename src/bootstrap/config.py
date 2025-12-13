@@ -14,5 +14,5 @@ class AppConfig(Settings):
     def masked_dict(self) -> dict[str, Any]:
         return self.model_dump(
             mode="json",
-            exclude={"db": {"db_password"}, "auth": {"secret_key", "algorithm"}},
+            exclude={"db": {"db_pass"}, "auth": {"secret_key", "algorithm"}},
         )
