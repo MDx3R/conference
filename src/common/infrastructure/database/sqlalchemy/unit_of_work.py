@@ -106,7 +106,7 @@ class UnitOfWork(IUnitOfWork):
             return
 
         async with self as uow:
-            yield uow._get_session()
+            yield uow._get_session()  # noqa: SLF001
 
     async def _finalize_transaction(self, has_error: bool) -> None:
         if not self._transaction_exists():

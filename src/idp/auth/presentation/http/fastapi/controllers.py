@@ -38,15 +38,11 @@ class AuthController:
     logout_use_case: ILogoutUseCase = Depends()
     refresh_token_use_case: IRefreshTokenUseCase = Depends()
 
-    @auth_router.post(
-        "/login",
-        response_model=AuthTokensResponse,
-        dependencies=[Depends(require_unauthenticated)],
-    )
+    @auth_router.post("/login", dependencies=[Depends(require_unauthenticated)])
     async def login(
         self,
-        username: str = Form(...),
-        password: str = Form(...),
+        username: Annotated[str, Form()],
+        password: Annotated[str, Form()],
     ) -> AuthTokensResponse:
         try:
             result = await self.login_use_case.execute(
@@ -80,11 +76,7 @@ class AuthController:
     async def logout(self, token: Annotated[str, Depends(get_token)]) -> None:
         await self.logout_use_case.execute(LogoutCommand(refresh_token=token))
 
-    @auth_router.post(
-        "/refresh",
-        response_model=AuthTokensResponse,
-        dependencies=[Depends(require_authenticated)],
-    )
+    @auth_router.post("/refresh", dependencies=[Depends(require_authenticated)])
     async def refresh(
         self, token: Annotated[str, Depends(get_token)]
     ) -> AuthTokensResponse:
