@@ -5,9 +5,8 @@ from common.infrastructure.database.sqlalchemy.database import Database
 from common.infrastructure.di.container.container import CommonContainer
 from common.infrastructure.logger.logging.logger_factory import LoggerFactory
 from common.infrastructure.server.fastapi.server import FastAPIServer
-from idp.auth.infrastructure.app.app import AuthApp, TokenApp
-from idp.auth.infrastructure.di.container.container import AuthContainer, TokenContainer
-from idp.identity.infrastructure.app.app import IdentityApp
+from idp.auth.infrastructure.app.app import TokenApp
+from idp.auth.infrastructure.di.container.container import TokenContainer
 from idp.identity.infrastructure.di.container.container import IdentityContainer
 
 from conference.conference.infrastructure.app.app import ConferenceApp
@@ -60,13 +59,6 @@ def main() -> App:
 
     identity_container.token_introspector.override(token_container.token_introspector)
 
-    auth_container = AuthContainer(
-        identity_service=identity_container.identity_service,
-        token_issuer=token_container.token_issuer,
-        token_revoker=token_container.token_revoker,
-        token_refresher=token_container.token_refresher,
-    )
-
     conference_container = ConferenceContainer(
         uuid_generator=uuid_generator,
         query_executor=query_executor,
@@ -84,8 +76,6 @@ def main() -> App:
     app = App(logger, server)
     app.add_app(
         TokenApp(token_container, server),
-        AuthApp(auth_container, server),
-        IdentityApp(identity_container, server),
         ConferenceApp(conference_container, server),
         ParticipantApp(participant_container, server),
     )

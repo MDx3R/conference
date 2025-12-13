@@ -11,4 +11,4 @@ COPY configs ./configs
 COPY src ./src
 COPY cli ./cli
 
-CMD ["poetry", "run", "uvicorn", "cli.idp.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "cli.conference.main:app", "--host", "0.0.0.0", "--port", "8000"]
