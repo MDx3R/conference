@@ -3,7 +3,7 @@ from typing import ClassVar
 
 from common.infrastructure.app.http_app import IHTTPApp
 from common.infrastructure.server.fastapi.middleware.error_middleware import (
-    ErrorHandlingMiddleware,
+    IHTTPErrorHandler,
 )
 from common.infrastructure.server.fastapi.server import FastAPIServer
 from idp.auth.application.interfaces.usecases.command.login_use_case import (
@@ -51,6 +51,9 @@ class AuthApp(IHTTPApp):
     def register_routers(self) -> None:
         self.server.register_router(auth_router, self.prefix, self.tags)
 
+    def error_handlers(self) -> list[IHTTPErrorHandler]:
+        return [TokenErrorHandler()]
+
 
 class TokenApp(IHTTPApp):
     def __init__(
@@ -63,13 +66,6 @@ class TokenApp(IHTTPApp):
 
     def configure(self) -> None:
         super().configure()
-        self.configure_middleware()
-
-    def configure_middleware(self) -> None:
-        self.server.use_middleware(
-            ErrorHandlingMiddleware,
-            handlers=[TokenErrorHandler()],
-        )
 
     def configure_dependencies(self) -> None:
         self.server.override_dependency(
