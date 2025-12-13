@@ -1,0 +1,44 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["Docker Build"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Stage
+        if: ${{ github.event.workflow_run.head_branch == 'dev' }}
+        run: |
+          echo "Deploying to Stage..."
+          ssh ${{ secrets.STAGE_USER }}@${{ secrets.STAGE_HOST }} << 'EOF'
+            cd ~/app/conference
+            git fetch origin
+            git reset --hard origin/dev
+
+            docker compose -f docker-compose.yaml -f docker-compose.dev.yaml pull
+            docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d --remove-orphans
+          EOF
+
+      - name: Deploy to Prod
+        if: ${{ github.event.workflow_run.head_branch == 'main' }}
+        run: |
+          echo "Deploying to Prod..."
+          ssh ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << 'EOF'
+            cd ~/app/conference
+            git fetch origin
+            git reset --hard origin/main
+
+            docker compose -f docker-compose.yaml -f docker-compose.prod.yaml pull
+            docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d --remove-orphans
+          EOF
