@@ -34,6 +34,38 @@ services:
       - .:/app
     command: ["poetry", "run", "alembic", "upgrade", "head"]
 
+  idp:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8100:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+    env_file:
+      - .env
+    # NOTE: environment overrides env_file with proper DB_PORT and DB_HOST
+    # regardless of launch env (i.e. local, dev or prod and etc.)
+    environment:
+      DB_PORT: 5432
+      DB_HOST: postgres
+    volumes:
+      - .:/app
+    command:
+      [
+        "poetry",
+        "run",
+        "uvicorn",
+        "cli.idp.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+      ]
+
   app:
     build:
       context: .
