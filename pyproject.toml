@@ -119,3 +119,8 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src", "tests"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "migrations"]
+# B101: assert_used (отключаем, если используем ассерты вне тестов сознательно)
+skips = []

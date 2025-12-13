@@ -2,6 +2,8 @@ import logging
 
 from common.infrastructure.app.http_app import IHTTPApp
 from common.infrastructure.app.iapp import IApp
+from common.infrastructure.config.config import RunEnvironment
+from common.infrastructure.config.server_config import ServerConfig
 from common.infrastructure.server.fastapi.middleware.error_middleware import (
     ApplicationErrorHandler,
     DomainErrorHandler,
@@ -16,9 +18,17 @@ from common.infrastructure.server.fastapi.server import FastAPIServer
 
 
 class App(IApp):
-    def __init__(self, logger: logging.Logger, server: FastAPIServer) -> None:
+    def __init__(
+        self,
+        env: RunEnvironment,
+        logger: logging.Logger,
+        server: FastAPIServer,
+        config: ServerConfig,
+    ) -> None:
+        self.env = env
         self.logger = logger
         self.server = server
+        self.config = config
         self.sub_apps: list[IHTTPApp] = []
 
     def configure(self) -> None:
@@ -53,13 +63,14 @@ class App(IApp):
         import uvicorn  # noqa: PLC0415
 
         self.logger.info(
-            "Service is starting with uvicorn on 0.0.0.0:8000",
-            extra={"port": 8000, "host": "0.0.0.0"},
+            "Service starting",
+            extra={"env": self.env, "host": self.config.host, "port": self.config.port},
         )
-        uvicorn.run(
-            self.server.get_app(), host="0.0.0.0", port=8000
-        )  # TODO: Add config
-        self.logger.info("uvicorn stopped")
+        uvicorn.run(self.server.get_app(), host=self.config.host, port=self.config.port)
+        self.logger.info(
+            "Service stopped",
+            extra={"host": self.config.host, "port": self.config.port},
+        )
 
     def get_server(self) -> FastAPIServer:
         return self.server

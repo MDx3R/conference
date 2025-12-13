@@ -61,7 +61,7 @@ def main() -> App:
 
     logger.info("building application...")
 
-    app = App(logger, server)
+    app = App(config.env, logger, server, config.server)
     app.add_app(
         TokenApp(token_container, server),
         AuthApp(auth_container, server),
