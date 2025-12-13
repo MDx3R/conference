@@ -69,3 +69,18 @@ class Participant:
             about=about,
             address=address,
         )
+
+    def update_full_name(self, full_name: FullName) -> None:
+        self.full_name = full_name
+
+    def update_phone_number(self, phone_number: PhoneNumber) -> None:
+        self.phone_number = phone_number
+
+    def update_home_number(self, home_number: PhoneNumber | None) -> None:
+        self.home_number = home_number
+
+    def update_address(self, address: Address) -> None:
+        self.address = address
+
+    def update_about(self, about: About) -> None:
+        self.about = about

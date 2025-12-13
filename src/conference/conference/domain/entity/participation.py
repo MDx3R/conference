@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import date
+from typing import Self
 from uuid import UUID
 
 from common.domain.exceptions import InvariantViolationError
@@ -12,37 +13,44 @@ from conference.conference.domain.value_objects.submission import Submission
 
 @dataclass
 class Participation:
+    conference_id: UUID
     participant_id: UUID
     role: Role
-    first_invitation_date: date | None = None
-    application_date: date | None = None
-    submission: Submission | None = None
-    second_invitation_date: date | None = None
-    fee_payment_date: date | None = None
-    fee: Fee | None = None
-    stay_period: StayPeriod | None = None
-    needs_hotel: bool = False
+    first_invitation_date: date | None
+    application_date: date | None
+    submission: Submission | None
+    second_invitation_date: date | None
+    fee_payment_date: date | None
+    fee: Fee | None
+    stay_period: StayPeriod | None
+    needs_hotel: bool
 
     @classmethod
     def create(  # noqa: PLR0913
         cls,
+        conference_id: UUID,
         participant_id: UUID,
         role: Role,
         application_date: date,
         needs_hotel: bool = False,
         first_invitation_date: date | None = None,
         submission: Submission | None = None,
-    ) -> "Participation":
+    ) -> Self:
         if role == Role.PARTICIPANT and submission:
             raise InvariantViolationError("The participant cannot have a report.")
 
         return cls(
+            conference_id=conference_id,
             participant_id=participant_id,
             role=role,
             application_date=application_date,
             needs_hotel=needs_hotel,
             first_invitation_date=first_invitation_date,
             submission=submission,
+            second_invitation_date=None,
+            fee_payment_date=None,
+            fee=None,
+            stay_period=None,
         )
 
     def record_fee_payment(
