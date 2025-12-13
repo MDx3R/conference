@@ -1,4 +1,8 @@
 env: local
+server:
+  host: "127.0.0.1"
+  port: 8000
+
 auth:
   secret_key: "super-secret"
   algorithm: "HS256"
