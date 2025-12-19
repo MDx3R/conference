@@ -34,3 +34,4 @@ class ParticipationBase(Base):
     arrival_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     departure_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     needs_hotel: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    revoked: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)

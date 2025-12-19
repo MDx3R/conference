@@ -16,9 +16,25 @@ from idp.identity.infrastructure.database.postgres.sqlalchemy.models.identity_ba
 from sqlalchemy import Connection
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from conference.conference.infrastructure.database.postgres.sqlalchemy.models.conference_base import (
+    ConferenceBase,
+)
+from conference.conference.infrastructure.database.postgres.sqlalchemy.models.participation_base import (
+    ParticipationBase,
+)
+from conference.participant.infrastructure.database.postgres.sqlalchemy.models.participant_base import (
+    ParticipantBase,
+)
+
 
 # Needed for proper database configuration, e.g. fkeys and tables
-__models__: list[type[Base]] = [IdentityBase, TokenBase]
+__models__: list[type[Base]] = [
+    IdentityBase,
+    TokenBase,
+    ConferenceBase,
+    ParticipantBase,
+    ParticipationBase,
+]
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
