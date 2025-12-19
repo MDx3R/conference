@@ -73,7 +73,7 @@ def main() -> App:
 
     logger.info("building application...")
 
-    app = App(logger, server)
+    app = App(config.env, logger, server, config=config.server)
     app.add_app(
         TokenApp(token_container, server),
         ConferenceApp(conference_container, server),
