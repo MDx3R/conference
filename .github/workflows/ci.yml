@@ -28,10 +28,27 @@ jobs:
           config-path: .gitleaks.toml
           fail: true
 
+  sql-scan:
+    name: SQLCheck Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run SQLCheck
+        uses: yokawasa/action-sqlcheck@v1.4.0
+        with:
+          post-comment: true
+          risk-level: 3
+          verbose: false
+          # NOTE: Add directories to check all files, PR only by defaut
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   test:
     name: Tests and Static Analysis
     runs-on: ubuntu-latest
-    needs: secret-scan
+    needs: [secret-scan, sql-scan]
 
     steps:
       - name: Checkout repository
