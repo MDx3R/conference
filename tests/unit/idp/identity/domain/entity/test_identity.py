@@ -7,6 +7,8 @@ from idp.identity.domain.entity.identity import Identity
 
 class TestIdentity:
     def test_create(self) -> None:
+        raise Exception
+
         # Arrange
         identity_id = uuid4()
         username = "testuser"
