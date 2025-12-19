@@ -28,13 +28,13 @@ jobs:
           echo "Creating Stage Backup..."
           ssh ${{ secrets.STAGE_USER }}@${{ secrets.STAGE_HOST }} << 'EOF'
             cd ~/app/conference
-            mkdir -p /data/db_dumps
+            mkdir -p ~/data/db_dumps
 
             docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up postgres -d
             
             docker compose -f docker-compose.yaml -f docker-compose.dev.yaml exec postgres sh -c \
               'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' \
-              > /data/db_dumps/db_$(date +%Y%m%d_%H%M%S).sql
+              > ~/data/db_dumps/db_$(date +%Y%m%d_%H%M%S).sql
           EOF
 
       - name: Deploy to Stage
@@ -70,13 +70,13 @@ jobs:
           echo "Creating Prod Backup..."
           ssh ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << 'EOF'
             cd ~/app/conference
-            mkdir -p /data/db_dumps
+            mkdir -p ~/data/db_dumps
 
             docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up postgres -d
             
             docker compose -f docker-compose.yaml -f docker-compose.prod.yaml exec postgres sh -c \
               'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' \
-              > /data/db_dumps/db_$(date +%Y%m%d_%H%M%S).sql
+              > ~/data/db_dumps/db_$(date +%Y%m%d_%H%M%S).sql
           EOF
 
       - name: Deploy to Prod
