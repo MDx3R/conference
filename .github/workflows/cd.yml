@@ -28,7 +28,7 @@ jobs:
           echo "Creating Stage Backup..."
           ssh ${{ secrets.STAGE_USER }}@${{ secrets.STAGE_HOST }} << 'EOF'
             cd ~/app/conference
-            mkdir -p /data/db_dumps
+            mkdir -p ~/data/db_dumps
 
             docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up postgres -d
             
@@ -70,7 +70,7 @@ jobs:
           echo "Creating Prod Backup..."
           ssh ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << 'EOF'
             cd ~/app/conference
-            mkdir -p /data/db_dumps
+            mkdir -p ~/data/db_dumps
 
             docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up postgres -d
             
