@@ -7,8 +7,8 @@ on:
       - completed
 
 jobs:
-  deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  deploy-stage:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'dev' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -17,8 +17,27 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy to Stage
+      - name: Add Stage host to known_hosts
         if: ${{ github.event.workflow_run.head_branch == 'dev' }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.STAGE_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Backup Stage
+        run: |
+          echo "Creating Stage Backup..."
+          ssh ${{ secrets.STAGE_USER }}@${{ secrets.STAGE_HOST }} << 'EOF'
+            cd ~/app/conference
+            mkdir -p ~/data/db_dumps
+
+            docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up postgres -d
+            
+            docker compose -f docker-compose.yaml -f docker-compose.dev.yaml exec postgres sh -c \
+              'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' \
+              > ~/data/db_dumps/db_$(date +%Y%m%d_%H%M%S).sql
+          EOF
+
+      - name: Deploy to Stage
         run: |
           echo "Deploying to Stage..."
           ssh ${{ secrets.STAGE_USER }}@${{ secrets.STAGE_HOST }} << 'EOF'
@@ -30,8 +49,37 @@ jobs:
             docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d --remove-orphans
           EOF
 
-      - name: Deploy to Prod
+  deploy-prod:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add Prod host to known_hosts
         if: ${{ github.event.workflow_run.head_branch == 'main' }}
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.PROD_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Backup Prod
+        run: |
+          echo "Creating Prod Backup..."
+          ssh ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << 'EOF'
+            cd ~/app/conference
+            mkdir -p ~/data/db_dumps
+
+            docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up postgres -d
+            
+            docker compose -f docker-compose.yaml -f docker-compose.prod.yaml exec postgres sh -c \
+              'pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' \
+              > ~/data/db_dumps/db_$(date +%Y%m%d_%H%M%S).sql
+          EOF
+
+      - name: Deploy to Prod
         run: |
           echo "Deploying to Prod..."
           ssh ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }} << 'EOF'
