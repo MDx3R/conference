@@ -219,3 +219,9 @@ ALTER TABLE ONLY public.participations
 -- PostgreSQL database dump complete
 --
 
+--
+-- Manual updates
+--
+
+ALTER TABLE ONLY public.participations
+    ADD COLUMN IF NOT EXISTS revoked BOOLEAN;
